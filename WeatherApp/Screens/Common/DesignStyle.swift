@@ -10,21 +10,27 @@ import SwiftUI
 
 
 enum Colors {
-    case whiteText
+    case primaryText
+    case background
     
     func colorView() -> ColorView {
         switch self {
-        case .whiteText:
-            return ColorView(color: .white)
+        case .primaryText:
+            return ColorView(color: .primary)
+        case .background:
+            return ColorView(color: .blue)
         }
     }    
 }
 
 struct ColorView {
     let color: Color
+    let gradient: Gradient
     
-    init(color: Color) {
+    init(color: Color, gradient: Gradient = Gradient(colors: [Color(.lightGray), Color(.link), .white])) {
         self.color = color
+        self.gradient = gradient
+        
     }
 }
 
