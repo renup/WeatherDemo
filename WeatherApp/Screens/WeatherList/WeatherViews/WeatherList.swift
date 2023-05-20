@@ -15,8 +15,7 @@ struct WeatherList: View {
     var body: some View {
         NavigationView {
             ZStack {
-                LinearGradient(gradient: Colors.background.colorView().gradient, startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .ignoresSafeArea(.all)
+                applyGradient()
                 VStack {
                     TextField("Search", text: $searchText)
                         .frame(height: 40)

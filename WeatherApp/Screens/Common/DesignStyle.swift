@@ -11,27 +11,16 @@ import SwiftUI
 
 enum Colors {
     case primaryText
-    case background
+    case whiteText
     
-    func colorView() -> ColorView {
+    func colorView() -> Color {
         switch self {
         case .primaryText:
-            return ColorView(color: .primary)
-        case .background:
-            return ColorView(color: .blue)
+            return .primary
+        case .whiteText:
+            return .white
         }
     }    
-}
-
-struct ColorView {
-    let color: Color
-    let gradient: Gradient
-    
-    init(color: Color, gradient: Gradient = Gradient(colors: [Color(.lightGray), Color(.link), .white])) {
-        self.color = color
-        self.gradient = gradient
-        
-    }
 }
 
 
@@ -46,28 +35,33 @@ enum TextStyle {
 extension View {
     /// Set the pre-defined text style
     ///  Make sure you call foregroundColor before style() to set custom forgroundColor
-    @ViewBuilder func style(_ textStyle: TextStyle, colorView: ColorView = Colors.whiteText.colorView()) -> some View {
+    @ViewBuilder func style(_ textStyle: TextStyle, viewColor: Color = .primary) -> some View {
         switch textStyle {
         case .h1:
             self.font(.system(size: 24, weight: .heavy))
-                .foregroundColor(colorView.color)
+                .foregroundColor(viewColor)
         case .h2:
             self.font(.system(size: 20, weight: .bold))
-                .foregroundColor(colorView.color)
+                .foregroundColor(viewColor)
 
         case .medium:
             self.font(.system(size: 16, weight: .regular))
-                .foregroundColor(colorView.color)
+                .foregroundColor(viewColor)
 
         case .small:
             self.font(.system(size: 14, weight: .regular))
-                .foregroundColor(colorView.color)
+                .foregroundColor(viewColor)
         
         case .small_bold:
             self.font(.system(size: 14, weight: .bold))
-                .foregroundColor(colorView.color)
+                .foregroundColor(viewColor)
                 .lineSpacing(0.14)
         }
+    }
+    
+    @ViewBuilder func applyGradient() -> some View {
+        LinearGradient(gradient: Gradient(colors: [Color(.lightGray), Color(.link), .white]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            .ignoresSafeArea(.all)
     }
 }
 

@@ -21,9 +21,9 @@ struct EmptyWeatherListView: View {
             }
             
             Text("Welcome to viewing weather in your city.")
-                .style(.h1)
+                .style(.h1, viewColor: .white)
             Text("Feel free to enter a city in search field above")
-                .style(.h2)
+                .style(.h2, viewColor: .white)
         }
         .padding()
     }
