@@ -22,6 +22,8 @@
 		7C04A53E2A194108000B7B51 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C04A53D2A194108000B7B51 /* WeatherService.swift */; };
 		7C04A5402A1964F4000B7B51 /* EmptyWeatherListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C04A53F2A1964F4000B7B51 /* EmptyWeatherListView.swift */; };
 		7C04A5422A196837000B7B51 /* WeatherInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C04A5412A196837000B7B51 /* WeatherInfo.swift */; };
+		7C9ABF352A19810600D9925C /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9ABF342A19810600D9925C /* ErrorView.swift */; };
+		7C9ABF372A19830000D9925C /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9ABF362A19830000D9925C /* State.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		7C04A53D2A194108000B7B51 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		7C04A53F2A1964F4000B7B51 /* EmptyWeatherListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWeatherListView.swift; sourceTree = "<group>"; };
 		7C04A5412A196837000B7B51 /* WeatherInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInfo.swift; sourceTree = "<group>"; };
+		7C9ABF342A19810600D9925C /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		7C9ABF362A19830000D9925C /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				7C04A5372A192A16000B7B51 /* DesignStyle.swift */,
+				7C9ABF342A19810600D9925C /* ErrorView.swift */,
+				7C9ABF362A19830000D9925C /* State.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -218,12 +224,14 @@
 				7C04A53B2A193AE6000B7B51 /* WeatherViewModel.swift in Sources */,
 				7C04A51C2A18A2CD000B7B51 /* ViewController.swift in Sources */,
 				7C04A52E2A18A5CA000B7B51 /* WeatherCell.swift in Sources */,
+				7C9ABF372A19830000D9925C /* State.swift in Sources */,
 				7C04A5182A18A2CD000B7B51 /* AppDelegate.swift in Sources */,
 				7C04A5352A1927B9000B7B51 /* Constants.swift in Sources */,
 				7C04A5332A18A635000B7B51 /* Weather.swift in Sources */,
 				7C04A5422A196837000B7B51 /* WeatherInfo.swift in Sources */,
 				7C04A51A2A18A2CD000B7B51 /* SceneDelegate.swift in Sources */,
 				7C04A5402A1964F4000B7B51 /* EmptyWeatherListView.swift in Sources */,
+				7C9ABF352A19810600D9925C /* ErrorView.swift in Sources */,
 				7C04A5382A192A16000B7B51 /* DesignStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

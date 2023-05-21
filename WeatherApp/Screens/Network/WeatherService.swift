@@ -29,6 +29,7 @@ enum NetworkError: Error {
 
 protocol WeatherServiceProtocol {
     func fetchWeather(search: String) -> Future<WeatherResponse, Error>
+    func fetchWeather(lat: Double, lon: Double) -> Future<WeatherResponse, Error>
 }
 
 final class WeatherService: WeatherServiceProtocol {
@@ -39,9 +40,41 @@ final class WeatherService: WeatherServiceProtocol {
     
     private var cancellables = Set<AnyCancellable>()
     
+    func fetchWeather(lat: Double, lon: Double) -> Future<WeatherResponse, Error> {
+        return Future { promise in
+            let weatherURLString = "\(Constants.weatherBaseURL)?lat=\(lat)&lon=\(lon)&appid=\(AppConstants.apiKey)"
+            guard let weatherURL = URL(string: weatherURLString) else {
+                promise(.failure(NetworkError.invalidURL(weatherURLString)))
+                return
+            }
+            
+            URLSession.shared.dataTaskPublisher(for: weatherURL)
+                .map { $0.data }
+                .decode(type: WeatherResponse.self, decoder: JSONDecoder())
+                .mapError { error in
+                    return error as Error
+                }
+                .sink { completion in
+                    switch completion {
+                    case .failure(let err):
+                        promise(.failure(err))
+                    case .finished:
+                        break
+                    }
+                } receiveValue: { weatherResponse in
+                    promise(.success(weatherResponse))
+                }
+                .store(in: &self.cancellables)
+        }
+       
+    }
+    
     func fetchWeather(search: String) -> Future<WeatherResponse, Error> {
         return Future { [self] promise in
-            let geoURLString = "\(Constants.geoBaseURL)?q=\(search)&limit=1&appid=\(AppConstants.apiKey)"
+            let encodedSearch = search.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            
+            let geoURLString = "\(Constants.geoBaseURL)?q=\(encodedSearch)&limit=1&appid=\(AppConstants.apiKey)"
+            
             guard let geoURL = URL(string: geoURLString) else {
                 promise(.failure(NetworkError.invalidURL(geoURLString)))
                 return
@@ -53,18 +86,7 @@ final class WeatherService: WeatherServiceProtocol {
                 .compactMap { $0.first }
                 .map {[weak self] location in
                     guard let self = self else { return }
-                    let weatherURLString = "\(Constants.weatherBaseURL)?lat=\(location.lat)&lon=\(location.lon)&appid=\(AppConstants.apiKey)"
-                    guard let weatherURL = URL(string: weatherURLString) else {
-                        promise(.failure(NetworkError.invalidURL(weatherURLString)))
-                        return
-                    }
-                    
-                    URLSession.shared.dataTaskPublisher(for: weatherURL)
-                        .map { $0.data }
-                        .decode(type: WeatherResponse.self, decoder: JSONDecoder())
-                        .mapError { error in
-                            return error as Error
-                        }
+                    self.fetchWeather(lat: location.lat, lon: location.lon)
                         .sink { completion in
                             switch completion {
                             case .failure(let err):

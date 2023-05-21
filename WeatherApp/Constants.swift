@@ -9,4 +9,6 @@ import Foundation
 
 struct AppConstants {
     static let apiKey = "d9b989c37bd0640006ce9d7350173842"
+    static let defaultLat = "defaultLat"
+    static let defaultLon = "defaultLon"
 }

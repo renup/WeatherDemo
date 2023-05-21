@@ -23,12 +23,17 @@ enum Colors {
     }    
 }
 
+enum GradientType {
+    case normal, error
+}
+
 
 enum TextStyle {
     case h1
     case h2
     case small
     case medium
+    case medium_bold
     case small_bold
 }
 
@@ -47,6 +52,9 @@ extension View {
         case .medium:
             self.font(.system(size: 16, weight: .regular))
                 .foregroundColor(viewColor)
+        case .medium_bold:
+            self.font(.system(size: 16, weight: .bold))
+                .foregroundColor(viewColor)
 
         case .small:
             self.font(.system(size: 14, weight: .regular))
@@ -59,9 +67,16 @@ extension View {
         }
     }
     
-    @ViewBuilder func applyGradient() -> some View {
-        LinearGradient(gradient: Gradient(colors: [Color(.lightGray), Color(.link), .white]), startPoint: .topLeading, endPoint: .bottomTrailing)
-            .ignoresSafeArea(.all)
+    @ViewBuilder func applyGradient(_ type: GradientType = .normal) -> some View {
+        switch type {
+        case .normal:
+            LinearGradient(gradient: Gradient(colors: [Color(.lightGray), Color(.link), .white]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea(.all)
+        case .error:
+            LinearGradient(gradient: Gradient(colors: [.orange, Color(.link), .red]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea(.all)
+        }
+        
     }
 }
 

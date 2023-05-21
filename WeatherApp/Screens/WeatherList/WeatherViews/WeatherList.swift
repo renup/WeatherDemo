@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WeatherList: View {
     @State var searchText = ""
+    @State var doneTyping = false
     
     @StateObject var viewModel = WeatherViewModel()
     
@@ -17,32 +18,54 @@ struct WeatherList: View {
             ZStack {
                 applyGradient()
                 VStack {
-                    TextField("Search", text: $searchText)
-                        .frame(height: 40)
-                        .padding(.horizontal, 10)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
+                    HStack{
+                        TextField("Search", text: $searchText)
+                            .frame(height: 40)
+                            .padding(.horizontal, 10)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(10)
+                        Spacer()
+                        
+                        Button {
+                            if doneTyping {
+                                viewModel.state = .initial
+                                searchText = ""
+                            } else {
+                                viewModel.getWeather(searchText)
+                            }
+                            doneTyping.toggle()
+
+                        } label: {
+                            Text(doneTyping ? "Clear" : "Done")
+                                .style(.medium_bold, viewColor: .white)
+                                .padding(10)
+                                .background(.green)
+                                .cornerRadius(15)
+                        }
+                    }
+                        
+                    Spacer()
                     
-                    if viewModel.weatherList.isEmpty {
-                        Spacer()
+                    switch viewModel.state {
+                    case .initial:
                         EmptyWeatherListView()
-                        Spacer()
-                    } else {
+                    case .loading:
+                        Text("Loading...")
+                            .style(.h1, viewColor: .white)
+                    case .loaded:
                         List(viewModel.weatherList) { weather in
                             WeatherCell(weather: weather)
                         }
-
+                    case .error:
+                        ErrorView()
                     }
+                    Spacer()
                 }.padding()
                 
             }
             .navigationTitle(Text("Weather"))
-            .onChange(of: searchText) { newValue in
-                viewModel.getWeather(newValue)
-            }
-            .onAppear() {
-                UITableView.appearance().backgroundColor = .clear
-                UITableViewCell.appearance().backgroundColor = .clear
+            .onAppear {
+                viewModel.shouldGetDefaultCityWeather()
             }
         }
     }

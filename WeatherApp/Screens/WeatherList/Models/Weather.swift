@@ -17,9 +17,15 @@ struct Location: Codable {
 
 struct WeatherResponse: Codable {
     let name: String
+    let coord: Coord
     let main: Main
     let weather: [Weather]
     let timezone: Int
+}
+
+struct Coord: Codable {
+    let lat: Double
+    let lon: Double
 }
 
 struct Weather: Codable {
