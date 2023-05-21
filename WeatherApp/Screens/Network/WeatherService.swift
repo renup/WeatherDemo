@@ -51,9 +51,6 @@ final class WeatherService: WeatherServiceProtocol {
             URLSession.shared.dataTaskPublisher(for: weatherURL)
                 .map { $0.data }
                 .decode(type: WeatherResponse.self, decoder: JSONDecoder())
-                .mapError { error in
-                    return error as Error
-                }
                 .sink { completion in
                     switch completion {
                     case .failure(let err):

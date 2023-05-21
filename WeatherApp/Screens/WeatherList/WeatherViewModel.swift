@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreLocation
 
 final class WeatherViewModel: ObservableObject {
     
@@ -26,12 +27,24 @@ final class WeatherViewModel: ObservableObject {
     
     init(service: WeatherServiceProtocol = WeatherService()) {
         self.service = service
+        getUserCurrentLocation()
+    }
+    
+    private func getUserCurrentLocation() {
+        LocationManager.shared.getLocation {[weak self] result in
+            if self?.defaultLatitute == 0 && self?.defaultLongitude == 0  {
+                self?.getWeather(lat: result.lat, lon: result.lon)
+            }
+        }
     }
     
     func shouldGetDefaultCityWeather(_ searchText: String = "") {
         if searchText.isEmpty {
             if defaultLatitute != 0 && defaultLongitude != 0 {
-                getWeather(lat: defaultLatitute, lon: defaultLongitude)
+                getWeather(
+                    lat: defaultLatitute,
+                    lon: defaultLongitude
+                )
             }
         }
     }
