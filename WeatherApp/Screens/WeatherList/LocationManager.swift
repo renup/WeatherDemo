@@ -31,27 +31,5 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
                      lat: location.coordinate.latitude))
     }
     
-    func resolveName(
-        for location: CLLocation,
-        completion: @escaping (String?) -> Void
-    ) {
-        let coder = CLGeocoder()
-        coder.reverseGeocodeLocation(location) { places, error in
-            guard let place = places?.first, error == nil else {
-                return
-            }
-            
-            var name = ""
-            
-            if let city = place.locality {
-                name = city
-            }
-            
-            if let region = place.administrativeArea {
-                name += ", \(region)"
-            }
-            completion(name)
-        }
-    }
 }
 

@@ -41,6 +41,7 @@ struct WeatherInfo: Identifiable {
     
     private mutating func initialSetUp() {
         nameString()
+        iconString()
         currentTemperature()
         timeString()
         temperatureHigh()

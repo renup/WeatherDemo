@@ -26,6 +26,10 @@
 		7C9ABF372A19830000D9925C /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9ABF362A19830000D9925C /* State.swift */; };
 		7C9ABF392A19B02D00D9925C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9ABF382A19B02D00D9925C /* LocationManager.swift */; };
 		7C9ABF412A19BF0200D9925C /* WeatherAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9ABF402A19BF0200D9925C /* WeatherAppTests.swift */; };
+		7C9ABF482A19BF3D00D9925C /* WeatherViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9ABF472A19BF3D00D9925C /* WeatherViewModelTests.swift */; };
+		7C9ABF4C2A19C3A200D9925C /* weather_search.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C9ABF492A19C3A200D9925C /* weather_search.json */; };
+		7C9ABF4D2A19C3A200D9925C /* weather_failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C9ABF4A2A19C3A200D9925C /* weather_failure.json */; };
+		7C9ABF4E2A19C3A200D9925C /* weather_latlon.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C9ABF4B2A19C3A200D9925C /* weather_latlon.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +65,10 @@
 		7C9ABF382A19B02D00D9925C /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7C9ABF3E2A19BF0200D9925C /* WeatherAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C9ABF402A19BF0200D9925C /* WeatherAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppTests.swift; sourceTree = "<group>"; };
+		7C9ABF472A19BF3D00D9925C /* WeatherViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModelTests.swift; sourceTree = "<group>"; };
+		7C9ABF492A19C3A200D9925C /* weather_search.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = weather_search.json; sourceTree = "<group>"; };
+		7C9ABF4A2A19C3A200D9925C /* weather_failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = weather_failure.json; sourceTree = "<group>"; };
+		7C9ABF4B2A19C3A200D9925C /* weather_latlon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = weather_latlon.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,7 +184,11 @@
 		7C9ABF3F2A19BF0200D9925C /* WeatherAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				7C9ABF492A19C3A200D9925C /* weather_search.json */,
+				7C9ABF4A2A19C3A200D9925C /* weather_failure.json */,
+				7C9ABF4B2A19C3A200D9925C /* weather_latlon.json */,
 				7C9ABF402A19BF0200D9925C /* WeatherAppTests.swift */,
+				7C9ABF472A19BF3D00D9925C /* WeatherViewModelTests.swift */,
 			);
 			path = WeatherAppTests;
 			sourceTree = "<group>";
@@ -272,6 +284,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C9ABF4C2A19C3A200D9925C /* weather_search.json in Resources */,
+				7C9ABF4D2A19C3A200D9925C /* weather_failure.json in Resources */,
+				7C9ABF4E2A19C3A200D9925C /* weather_latlon.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C9ABF412A19BF0200D9925C /* WeatherAppTests.swift in Sources */,
+				7C9ABF482A19BF3D00D9925C /* WeatherViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
