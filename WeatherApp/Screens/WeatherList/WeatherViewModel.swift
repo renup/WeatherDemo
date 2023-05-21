@@ -55,16 +55,7 @@ final class WeatherViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    private func formatSearchString(_ searchText: String) -> String {
-        return searchText
-            .trimmingCharacters(in: .whitespacesAndNewlines) // remove leading/trailing whitespaces and newlines
-            .components(separatedBy: CharacterSet.letters.inverted)
-            .joined(separator: "")
-            .lowercased()
-    }
-    
     func getWeather(_ searchText: String) {
-//        let newValue = formatSearchString(searchText)
         shouldGetDefaultCityWeather(searchText)
         
         state = .loading
@@ -74,7 +65,6 @@ final class WeatherViewModel: ObservableObject {
                 switch completion {
                 case .failure(let err):
                     self?.state = .error
-                    print(err.localizedDescription)
                 case .finished:
                     break
                 }
