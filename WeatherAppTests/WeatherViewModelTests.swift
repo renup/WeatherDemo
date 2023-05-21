@@ -54,6 +54,7 @@ final class WeatherViewModelTests: XCTestCase {
                     let weather = viewModel.weatherList.first!
                     XCTAssertEqual(weather.name, "Alameda")
                     XCTAssertEqual(weather.currentTemp, "57.9°")
+                    XCTAssertEqual(weather.iconURLString, "https://openweathermap.org/img/wn/04d@2x.png")
                     exp.fulfill()
                 case .error:
                     XCTFail()
