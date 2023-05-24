@@ -10,20 +10,23 @@ import SwiftUI
 struct EmptyWeatherListView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
+            VStack {
+                Text("Welcome 😊")
+                    .style(.h1, viewColor: .white)
+                    .minimumScaleFactor(0.5)
+                Text("Search for a city/state in USA above")
+                    .style(.h2, viewColor: .white)
+                    .minimumScaleFactor(0.5)
+            }
             HStack{
                 Spacer()
                 Image(systemName:"cloud.sun")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 200, height: 200)
+                    .frame(width: 100, height: 100)
                     .foregroundColor(.white)
                 Spacer()
             }
-            
-            Text("Welcome to viewing weather in your city.")
-                .style(.h1, viewColor: .white)
-            Text("Feel free to enter a city in search field above")
-                .style(.h2, viewColor: .white)
         }
         .padding()
     }

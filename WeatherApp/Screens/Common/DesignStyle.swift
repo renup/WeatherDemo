@@ -70,7 +70,7 @@ extension View {
     @ViewBuilder func applyGradient(_ type: GradientType = .normal) -> some View {
         switch type {
         case .normal:
-            LinearGradient(gradient: Gradient(colors: [Color(.lightGray), Color(.link), .white]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(gradient: Gradient(colors: [Color(.orange), Color(.link), .white]), startPoint: .topLeading, endPoint: .bottomTrailing)
                 .ignoresSafeArea(.all)
         case .error:
             LinearGradient(gradient: Gradient(colors: [.orange, Color(.link), .red]), startPoint: .topLeading, endPoint: .bottomTrailing)

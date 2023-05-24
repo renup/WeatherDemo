@@ -30,6 +30,14 @@ final class WeatherViewModel: ObservableObject {
         getUserCurrentLocation()
     }
     
+    var errorResultMessage: String {
+        "Oops!! something went wrong 😢. Try again later 🙏"
+    }
+    
+    var noResultMessage:String {
+        "No results found for "
+    }
+    
     private func getUserCurrentLocation() {
         LocationManager.shared.getLocation {[weak self] result in
             if self?.defaultLatitute == 0 && self?.defaultLongitude == 0  {
@@ -59,6 +67,7 @@ final class WeatherViewModel: ObservableObject {
                     self?.state = .error
                     print(err.localizedDescription)
                 case .finished:
+                    self?.state = .loaded
                     break
                 }
             } receiveValue: {[weak self] response in
@@ -77,8 +86,14 @@ final class WeatherViewModel: ObservableObject {
             .sink {[weak self] completion in
                 switch completion {
                 case .failure(let err):
-                    self?.state = .error
+                    print("Error during search: \(err.localizedDescription)")
+                    if err.localizedDescription.hasPrefix("The operation couldn’t be completed.") {
+                        self?.state = .noResults
+                    } else {
+                        self?.state = .error
+                    }
                 case .finished:
+                    self?.state = .loaded
                     break
                 }
             } receiveValue: {[weak self] response in

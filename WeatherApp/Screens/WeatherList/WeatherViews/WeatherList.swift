@@ -9,43 +9,14 @@ import SwiftUI
 
 struct WeatherList: View {
     @State var searchText = ""
-    @State var doneTyping = false
     
     @StateObject var viewModel = WeatherViewModel()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 applyGradient()
                 VStack {
-                    HStack{
-                        TextField("Search", text: $searchText)
-                            .frame(height: 40)
-                            .padding(.horizontal, 10)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(10)
-                        Spacer()
-                        
-                        Button {
-                            if doneTyping {
-                                viewModel.state = .initial
-                                searchText = ""
-                            } else {
-                                viewModel.getWeather(searchText)
-                            }
-                            doneTyping.toggle()
-
-                        } label: {
-                            Text(doneTyping ? "Clear" : "Done")
-                                .style(.medium_bold, viewColor: .white)
-                                .padding(10)
-                                .background(.green)
-                                .cornerRadius(15)
-                        }
-                    }
-                        
-                    Spacer()
-                    
                     switch viewModel.state {
                     case .initial:
                         EmptyWeatherListView()
@@ -56,19 +27,34 @@ struct WeatherList: View {
                         List(viewModel.weatherList) { weather in
                             WeatherCell(weather: weather)
                         }
+                        .listStyle(PlainListStyle())
+                        .background(Color.clear)
+                    case .noResults:
+                        ErrorView(title: "\(viewModel.noResultMessage) \(searchText)")
                     case .error:
-                        ErrorView()
+                        ErrorView(title: viewModel.errorResultMessage)
                     }
-                    Spacer()
-                }.padding()
+                }
+                .padding()
+                .navigationTitle(Text("Weather"))
+                .onAppear {
+                    viewModel.shouldGetDefaultCityWeather()
+                }
                 
             }
-            .navigationTitle(Text("Weather"))
-            .onAppear {
-                viewModel.shouldGetDefaultCityWeather()
-            }
         }
+        .searchable(text: $searchText, prompt: "Search for a city/state in USA")
+        .onChange(of: searchText, perform: { newValue in
+            if newValue.isEmpty || viewModel.state == .noResults {
+                viewModel.state = .initial
+            }
+        })
+        .onSubmit(of: .search) {
+            viewModel.getWeather(searchText)
+        }
+            
     }
+        
 }
 
 struct WeatherList_Previews: PreviewProvider {

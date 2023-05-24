@@ -8,5 +8,5 @@
 import Foundation
 
 enum NetworkState {
-    case initial, loading, loaded, error
+    case initial, loading, loaded, error, noResults
 }

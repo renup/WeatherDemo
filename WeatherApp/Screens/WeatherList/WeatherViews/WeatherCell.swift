@@ -15,6 +15,7 @@ struct WeatherCell: View {
             cityWeather
             averageWeather
         }
+        .background(Color.clear)
     }
     
     var cityWeather: some View {
@@ -29,6 +30,8 @@ struct WeatherCell: View {
             Text(weather.currentTemp)
                 .style(.h2)
         }
+        .background(Color.clear)
+
     }
     
     var averageWeather: some View {
@@ -51,6 +54,7 @@ struct WeatherCell: View {
             Text("H: \(weather.tempHigh) L: \(weather.tempLow)")
                 .style(.small_bold)
         }
+        .background(Color.clear)
     }
 }
 

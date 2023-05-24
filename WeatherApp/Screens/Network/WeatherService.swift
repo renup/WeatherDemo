@@ -39,6 +39,9 @@ final class WeatherService: WeatherServiceProtocol {
     }
     
     private var cancellables = Set<AnyCancellable>()
+    private var geoCancellables = Set<AnyCancellable>()
+
+    var location: Location?
     
     func fetchWeather(lat: Double, lon: Double) -> Future<WeatherResponse, Error> {
         return Future { promise in
@@ -51,11 +54,18 @@ final class WeatherService: WeatherServiceProtocol {
             URLSession.shared.dataTaskPublisher(for: weatherURL)
                 .map { $0.data }
                 .decode(type: WeatherResponse.self, decoder: JSONDecoder())
+                .receive(on: RunLoop.main)
                 .sink { completion in
+                    print("lat lon completion")
+
                     switch completion {
                     case .failure(let err):
+                        print("lat lon Error: \(err.localizedDescription)")
+
                         promise(.failure(err))
                     case .finished:
+                        print("latlon finished")
+
                         break
                     }
                 } receiveValue: { weatherResponse in
@@ -66,9 +76,9 @@ final class WeatherService: WeatherServiceProtocol {
        
     }
     
-    func fetchWeather(search: String) -> Future<WeatherResponse, Error> {
-        return Future { [self] promise in
-            let encodedSearch = search.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+    private func fetchGeoLocation( _search: String) -> Future<Location, Error> {
+        return Future { promise in
+            let encodedSearch = _search.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             
             let geoURLString = "\(Constants.geoBaseURL)?q=\(encodedSearch)&limit=1&appid=\(AppConstants.apiKey)"
             
@@ -81,31 +91,61 @@ final class WeatherService: WeatherServiceProtocol {
                 .map { $0.data }
                 .decode(type: [Location].self, decoder: JSONDecoder())
                 .compactMap { $0.first }
-                .map {[weak self] location in
-                    guard let self = self else { return }
+                .receive(on: RunLoop.main)
+                .sink {[weak self] completion in
+                    switch completion {
+                    case .failure(let err):
+                        print("geo Error: \(err.localizedDescription)")
+                        promise(.failure(err))
+                    case .finished:
+                        print("geo finished")
+                        if self?.location == nil {
+                            promise(.failure(NetworkError.invalidURL("Invalid location")))
+                        }
+                        break
+                    }
+                } receiveValue: {[weak self] location in
+                    self?.location = location
+                    promise(.success(location))
+                }
+                .store(in: &self.geoCancellables)
+
+        }
+    }
+    
+    func fetchWeather(search: String) -> Future<WeatherResponse, Error> {
+        location = nil
+        return Future { [weak self] promise in
+            guard let self = self else { return }
+            self.fetchGeoLocation(_search: search)
+                .sink { completion in
+                    switch completion {
+                    case .failure(let err):
+                        print("search Error: \(err.localizedDescription)")
+                        promise(.failure(err))
+                    case .finished:
+                        break
+                    }
+                } receiveValue: { location in
                     self.fetchWeather(lat: location.lat, lon: location.lon)
                         .sink { completion in
+                            print("search completion")
                             switch completion {
                             case .failure(let err):
                                 promise(.failure(err))
                             case .finished:
+                                print("search finished")
+                                if self.location == nil {
+                                    promise(.failure(NetworkError.invalidURL("Invalid location")))
+                                }
                                 break
                             }
                         } receiveValue: { weatherResponse in
                             promise(.success(weatherResponse))
                         }
                         .store(in: &self.cancellables)
-                        
                 }
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .failure(let err):
-                        promise(.failure(err))
-                    case .finished:
-                        break
-                    }
-                }, receiveValue: { _ in })
-                .store(in: &cancellables)
+                .store(in: &self.cancellables)                
         }
         
     }
