@@ -49,6 +49,7 @@ struct WeatherInfo: Identifiable {
         time = dateFormatter.string(from: currentDate)
     }
     
+    //icon url - https://openweathermap.org/img/wn/04d@2x.png
     mutating func iconString() {
         guard let weatherIcon = model.weather.first?.icon else { return }
         iconURLString = "https://openweathermap.org/img/wn/\(weatherIcon)@2x.png"

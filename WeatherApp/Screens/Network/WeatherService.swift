@@ -8,14 +8,6 @@
 import Foundation
 import Combine
 
-/**
- //geo - https://api.openweathermap.org/geo/1.0/direct?q=alameda,ca,usa&limit=5&appid=d9b989c37bd0640006ce9d7350173842
- 
- //lat lon - https://api.openweathermap.org/data/2.5/weather?lat=37.7652076&lon=-122.2416355&appid=d9b989c37bd0640006ce9d7350173842
- 
- //icon url - https://openweathermap.org/img/wn/04d@2x.png
- */
-
 enum NetworkError: Error {
     case invalidURL(_ urlString: String)
     
@@ -27,6 +19,9 @@ enum NetworkError: Error {
     }
 }
 
+/// The WeatherServiceProtocol is used to define the methods that are required to be implemented by the WeatherService class
+///- fetchWeather(search: String): Returns a Future of WeatherResponse and Error, used to fetch weather data for a given search string
+///- fetchWeather(lat: Double, lon: Double): Returns a Future of WeatherResponse and Error, used to fetch weather data for a given latitude and longitude
 protocol WeatherServiceProtocol {
     func fetchWeather(search: String) -> Future<WeatherResponse, Error>
     func fetchWeather(lat: Double, lon: Double) -> Future<WeatherResponse, Error>
@@ -39,10 +34,10 @@ final class WeatherService: WeatherServiceProtocol {
     }
     
     private var cancellables = Set<AnyCancellable>()
-    private var geoCancellables = Set<AnyCancellable>()
 
     var location: Location?
     
+    //lat lon - https://api.openweathermap.org/data/2.5/weather?lat=37.7652076&lon=-122.2416355&appid=AppId
     func fetchWeather(lat: Double, lon: Double) -> Future<WeatherResponse, Error> {
         return Future { promise in
             let weatherURLString = "\(Constants.weatherBaseURL)?lat=\(lat)&lon=\(lon)&appid=\(AppConstants.apiKey)"
@@ -54,7 +49,6 @@ final class WeatherService: WeatherServiceProtocol {
             URLSession.shared.dataTaskPublisher(for: weatherURL)
                 .map { $0.data }
                 .decode(type: WeatherResponse.self, decoder: JSONDecoder())
-//                .receive(on: RunLoop.main)
                 .sink { completion in
                     switch completion {
                     case .failure(let err):
@@ -70,6 +64,8 @@ final class WeatherService: WeatherServiceProtocol {
        
     }
     
+    
+    //geo - https://api.openweathermap.org/geo/1.0/direct?q=alameda,ca,usa&limit=5&appid=AppId
     private func fetchGeoLocation( _search: String) -> Future<Location, Error> {
         return Future { promise in
             let encodedSearch = _search.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
@@ -85,7 +81,6 @@ final class WeatherService: WeatherServiceProtocol {
                 .map { $0.data }
                 .decode(type: [Location].self, decoder: JSONDecoder())
                 .compactMap { $0.first }
-//                .receive(on: RunLoop.main)
                 .sink {[weak self] completion in
                     switch completion {
                     case .failure(let err):
@@ -100,8 +95,7 @@ final class WeatherService: WeatherServiceProtocol {
                     self?.location = location
                     promise(.success(location))
                 }
-                .store(in: &self.geoCancellables)
-
+                .store(in: &self.cancellables)
         }
     }
     
