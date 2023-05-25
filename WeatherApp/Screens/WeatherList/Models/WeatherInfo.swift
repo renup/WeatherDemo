@@ -8,19 +8,6 @@
 import Foundation
 
 struct WeatherInfo: Identifiable {
-    //    static func == (lhs: WeatherInfo, rhs: WeatherInfo) -> Bool {
-    //        return (
-    //            lhs.name == rhs.name &&
-    //            lhs.time == rhs.time &&
-    //            lhs.currentTemp == rhs.currentTemp &&
-    //            lhs.description == rhs.description &&
-    //            lhs.tempLow == rhs.tempLow &&
-    //            lhs.tempHigh == rhs.tempHigh &&
-    //            lhs.iconURL == rhs.iconURL
-    //        )
-    //    }
-    
-    
     let id = UUID()
     var name: String = ""
     var currentTemp: String = ""

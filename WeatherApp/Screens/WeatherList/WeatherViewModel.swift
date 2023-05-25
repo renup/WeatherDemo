@@ -63,9 +63,8 @@ final class WeatherViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink {[weak self] completion in
                 switch completion {
-                case .failure(let err):
+                case .failure:
                     self?.state = .error
-                    print(err.localizedDescription)
                 case .finished:
                     self?.state = .loaded
                     break
@@ -86,7 +85,6 @@ final class WeatherViewModel: ObservableObject {
             .sink {[weak self] completion in
                 switch completion {
                 case .failure(let err):
-                    print("Error during search: \(err.localizedDescription)")
                     if err.localizedDescription.hasPrefix("The operation couldn’t be completed.") {
                         self?.state = .noResults
                     } else {

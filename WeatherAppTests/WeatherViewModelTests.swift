@@ -26,7 +26,6 @@ final class WeatherViewModelTests: XCTestCase {
 
     override func tearDownWithError() throws {
         cancellables = []
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
     func test_getWeather_latlon_success() {
