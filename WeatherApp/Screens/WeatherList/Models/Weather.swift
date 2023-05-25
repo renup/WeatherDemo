@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// Model objects for the weather data
+
 struct Location: Codable {
     let name: String
     let country: String

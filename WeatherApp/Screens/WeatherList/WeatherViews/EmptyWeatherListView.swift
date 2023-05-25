@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+/// This view is shown when there is no weather data to show
 struct EmptyWeatherListView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {

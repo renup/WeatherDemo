@@ -8,6 +8,8 @@
 import Foundation
 import CoreLocation
 
+
+// This class is responsible for managing the user's location by requesting permission, updating the location, and should handle errors.
 final class LocationManager: NSObject, CLLocationManagerDelegate {
     static let shared = LocationManager()
     

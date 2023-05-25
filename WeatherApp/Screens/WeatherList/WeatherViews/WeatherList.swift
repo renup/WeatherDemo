@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// this view is responsible for showing the list of weather data for the searched city/state and favorite cities (in future)
+
 struct WeatherList: View {
     @State var searchText = ""
     

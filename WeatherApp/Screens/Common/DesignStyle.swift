@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+/// This is where we define all the design styles for the app
+/// We can also define the text styles and colors here. At some point, if the app grows huge and there are growing number of styles, we should be able to manage the growing complexities in separate components/files.
 
 enum Colors {
     case primaryText

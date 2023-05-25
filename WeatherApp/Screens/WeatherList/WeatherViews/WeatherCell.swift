@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// This view is responsible for showing the weather data for a city
+
 struct WeatherCell: View {
     let weather: WeatherInfo
     
