@@ -54,18 +54,12 @@ final class WeatherService: WeatherServiceProtocol {
             URLSession.shared.dataTaskPublisher(for: weatherURL)
                 .map { $0.data }
                 .decode(type: WeatherResponse.self, decoder: JSONDecoder())
-                .receive(on: RunLoop.main)
+//                .receive(on: RunLoop.main)
                 .sink { completion in
-                    print("lat lon completion")
-
                     switch completion {
                     case .failure(let err):
-                        print("lat lon Error: \(err.localizedDescription)")
-
                         promise(.failure(err))
                     case .finished:
-                        print("latlon finished")
-
                         break
                     }
                 } receiveValue: { weatherResponse in
@@ -91,14 +85,12 @@ final class WeatherService: WeatherServiceProtocol {
                 .map { $0.data }
                 .decode(type: [Location].self, decoder: JSONDecoder())
                 .compactMap { $0.first }
-                .receive(on: RunLoop.main)
+//                .receive(on: RunLoop.main)
                 .sink {[weak self] completion in
                     switch completion {
                     case .failure(let err):
-                        print("geo Error: \(err.localizedDescription)")
                         promise(.failure(err))
                     case .finished:
-                        print("geo finished")
                         if self?.location == nil {
                             promise(.failure(NetworkError.invalidURL("Invalid location")))
                         }
@@ -121,7 +113,6 @@ final class WeatherService: WeatherServiceProtocol {
                 .sink { completion in
                     switch completion {
                     case .failure(let err):
-                        print("search Error: \(err.localizedDescription)")
                         promise(.failure(err))
                     case .finished:
                         break
@@ -129,12 +120,10 @@ final class WeatherService: WeatherServiceProtocol {
                 } receiveValue: { location in
                     self.fetchWeather(lat: location.lat, lon: location.lon)
                         .sink { completion in
-                            print("search completion")
                             switch completion {
                             case .failure(let err):
                                 promise(.failure(err))
                             case .finished:
-                                print("search finished")
                                 if self.location == nil {
                                     promise(.failure(NetworkError.invalidURL("Invalid location")))
                                 }

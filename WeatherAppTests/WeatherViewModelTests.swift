@@ -13,6 +13,7 @@ enum FileName: String {
     case weather_failure
     case weather_latlon
     case weather_search
+    case weather_noResults
 }
 
 final class WeatherViewModelTests: XCTestCase {
@@ -45,7 +46,7 @@ final class WeatherViewModelTests: XCTestCase {
                 }
             }, receiveValue: { state in
                 switch state {
-                case .initial, .loading:
+                case .initial, .loading, .noResults:
                     break
                 case .loaded:
                     XCTAssertEqual(state, .loaded)
@@ -80,7 +81,7 @@ final class WeatherViewModelTests: XCTestCase {
                 }
             }, receiveValue: { state in
                 switch state {
-                case .initial, .loading:
+                case .initial, .loading, .noResults:
                     break
                 case .loaded:
                     XCTFail()
@@ -110,7 +111,7 @@ final class WeatherViewModelTests: XCTestCase {
                 }
             }, receiveValue: { state in
                 switch state {
-                case .initial, .loading:
+                case .initial, .loading, .noResults:
                     break
                 case .loaded:
                     XCTAssertEqual(state, .loaded)
@@ -126,6 +127,32 @@ final class WeatherViewModelTests: XCTestCase {
             })
             .store(in: &cancellables)
         wait(for: [exp], timeout: 5)
+    }
+    
+    func test_getWeather_search_for_noLocationFound_case_results_noResults_failure() {
+        
+        let viewModel = WeatherViewModel(service: MockWeatherService(fileName: .weather_noResults))
+        
+        let exp = XCTestExpectation(description: "no results found failure")
+        
+        viewModel.getWeather("eeeeeee")
+        
+        viewModel.$state
+            .sink { _ in
+                XCTFail()
+            } receiveValue: { state in
+                switch state {
+                case .initial, .loading, .loaded, .error:
+                    break
+                case .noResults:
+                    XCTAssertEqual(state, .noResults)
+                    exp.fulfill()
+                }
+            }
+            .store(in: &cancellables)
+        
+        wait(for: [exp], timeout: 5)
+
     }
 
 }
@@ -148,6 +175,9 @@ class MockWeatherService: WeatherServiceProtocol {
         return Future {[weak self] promise in
             guard let self = self else { return }
             
+            if self.fileName == .weather_noResults {
+                promise(.failure(NetworkError.invalidURL("The operation couldn’t be completed.")))
+            }
             guard let url = self.loadMockData(self.fileName.rawValue) else { return }
             
             do {
@@ -187,8 +217,6 @@ class MockWeatherService: WeatherServiceProtocol {
             } catch (let err){
                 promise(.failure(err))
             }
-        
-            
         }
     }
     
