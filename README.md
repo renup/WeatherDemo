@@ -30,7 +30,7 @@ http://openweathermap.org/weather-conditions
 
  
 
-Implementation:
+**Implementation:**
 
 Search Screen
 
@@ -43,7 +43,7 @@ Auto-loads the last city searched upon app launch.
 Asks the User for location access, If the User gives permission to access the location, then retrieves weather data by default
 
 
-Coding mindset:
+**Coding mindset:**
 
 Well-constructed, easy-to-follow, commented code.
 
