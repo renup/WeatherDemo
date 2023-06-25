@@ -26,11 +26,19 @@ struct WeatherList: View {
                         Text("Loading...")
                             .style(.h1, viewColor: .white)
                     case .loaded:
-                        List(viewModel.weatherList) { weather in
-                            WeatherCell(weather: weather)
+                        VStack {
+                            ForEach(viewModel.weatherList) { weather in
+                                WeatherCell(weather: weather)
+                            }
                         }
-                        .listStyle(PlainListStyle())
-                        .background(Color.clear)
+                        .padding()
+                        .background(Color(.link).opacity(0.2))
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.black, lineWidth: 2)
+                        )
+                        Spacer()
                     case .noResults:
                         ErrorView(title: "\(viewModel.noResultMessage) \(searchText)")
                     case .error:

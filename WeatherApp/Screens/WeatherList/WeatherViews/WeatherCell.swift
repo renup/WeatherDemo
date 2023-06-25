@@ -33,7 +33,6 @@ struct WeatherCell: View {
                 .style(.h2)
         }
         .background(Color.clear)
-
     }
     
     var averageWeather: some View {
